@@ -13,7 +13,16 @@
                 <h4 class="my-0 font-weight-normal">NFC</h4>
             </div>
             <div class="card-body">
-                <img class="card-img-top" src="..." alt="Card image cap">
+                <img class="card-img-top" src="~/img/NFC_tag.png" alt="Card image cap">
+                <button type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#nfcModalCenter">Try it</button>
+            </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Photo</h4>
+            </div>
+            <div class="card-body">
+                <img class="card-img-top" src="~/img/Camera.png" alt="Card image cap">
                 <button type="button" class="btn btn-lg btn-block btn-primary">Try it</button>
             </div>
         </div>
@@ -22,21 +31,49 @@
                 <h4 class="my-0 font-weight-normal">Djingo</h4>
             </div>
             <div class="card-body">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <button type="button" class="btn btn-lg btn-block btn-primary">Try it</button>
-            </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Djingo</h4>
-            </div>
-            <div class="card-body">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <button type="button" class="btn btn-lg btn-block btn-primary">Try it</button>
+                <img class="card-img-top" src="~/img/Microphone.png" alt="Card image cap">
+                <button type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#djingoModalCenter">Try it</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="nfcModalCenter" tabindex="-1" role="dialog" aria-labelledby="nfcModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nfcModalLongTitle">NFC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">This mode will be enabled while appairing another device with yours.<br />Be sure to check NFC compability previously on both devices</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="djingoModalCenter" tabindex="-1" role="dialog" aria-labelledby="nfcModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nfcModalLongTitle">NFC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">Ok Djingo : This mode will be activated sooner.<br />Be patient to be able exchanging with your personal assistant that learns and helps you day to day.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts {
 }
