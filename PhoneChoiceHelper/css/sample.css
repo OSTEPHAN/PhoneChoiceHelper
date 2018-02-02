@@ -99,6 +99,15 @@ footer {
     background-color: #000;
 }
 
+.upload input {
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 3px;
+    height: 1px;
+    width: 1px;
+    z-index: -5;
+}
+
 @media (max-width: 991px) {
   .hero-container .caption {
     padding: 3%;

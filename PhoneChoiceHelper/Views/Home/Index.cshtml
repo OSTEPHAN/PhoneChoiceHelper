@@ -21,9 +21,10 @@
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">Photo</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body upload">
                 <img class="card-img-top" src="~/img/Camera.png" alt="Card image cap">
-                <button type="button" class="btn btn-lg btn-block btn-primary">Try it</button>
+                <input id="file" type="file" accept="image/*" class="browse" capture="camera">
+                <button id="file-select-button" type="button" class="btn btn-lg btn-block btn-primary browse">Try it</button>
             </div>
         </div>
         <div class="card mb-4 box-shadow">
@@ -75,5 +76,13 @@
         </div>
     </div>
 </div>
+
 @section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#file-select-button').click(function () {
+                $('.upload input').click();
+            });
+        });
+</script>
 }
