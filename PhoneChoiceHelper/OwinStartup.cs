@@ -8,9 +8,10 @@ namespace PhoneChoiceHelper
     using Microsoft.Owin;
     using Microsoft.Owin.Security.OAuth;
     using Owin;
+    using Swashbuckle.Application;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Swashbuckle.Application;
+    using System.Web.OData.Extensions;
 
     public class OwinStartup
     {
@@ -40,6 +41,16 @@ namespace PhoneChoiceHelper
             dependencyResolver.Resolve<HttpConfiguration>()
                 .EnableSwagger(c => c.SingleApiVersion("v1", "PhoneChoiceHelper API"))
                 .EnableSwaggerUi();
+
+            dependencyResolver.Resolve<HttpConfiguration>()
+                .Count()
+                .Filter()
+                .OrderBy()
+                .Expand()
+                .Select()
+                .MaxTop(null)
+                .EnableDependencyInjection();
+            ;
         }
         protected virtual string GetTokenEndpointPath()
         {

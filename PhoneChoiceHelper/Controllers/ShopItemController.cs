@@ -23,14 +23,14 @@ namespace PhoneChoiceHelper.Controllers
             this.entityStore = entityStore; ;
         }
 
-        //[Queryable]
+        [PhoneChoiceHelper.Queryable]
         [HttpGet]
         [Route]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
-        public IHttpActionResult Get()
+        public IQueryable<Model.ShopItem> Get()
         {
-            return Ok(this.entityStore.Query<Model.ShopItem>().ToList());
+            return this.entityStore.Query<Model.ShopItem>();
         }
 
         [HttpPost]
@@ -40,11 +40,15 @@ namespace PhoneChoiceHelper.Controllers
         public IHttpActionResult Post(Model.ShopItem shopItem)
         {
             var model = this.entityStore.Create<Model.ShopItem>();
-            model.Opinions = new List<Model.ShopItemOpinion>();
-            model.Reviews = new List<Model.ShopItemReview>();
+            model.Brand = shopItem.Brand;
+            model.Name = shopItem.Name;
+            model.SerializedImage = shopItem.SerializedImage;
+            model.Version = shopItem.Version;
 
-            model.Opinions.AddRange(
-                 shopItem
+            model.Opinions = model.Opinions ?? new List<Model.ShopItemOpinion>();
+            model.Reviews = model.Reviews ?? new List<Model.ShopItemReview>();
+
+            var modelOpinions = shopItem
                 .Opinions
                 .Select(o =>
                 {
@@ -53,19 +57,19 @@ namespace PhoneChoiceHelper.Controllers
                     repository.Note = o.Note;
                     repository.ShopItemId = shopItem.Id;
                     return repository;
-                }));
+                });
+            model.Opinions.AddRange(modelOpinions);
 
-            model.Reviews.AddRange(
-                 shopItem
+            var modeReviews = shopItem
                 .Reviews
                 .Select(r =>
                 {
                     var repository = this.entityStore.Create<Model.ShopItemReview>();
-                    repository.Url= r.Url;
+                    repository.Url = r.Url;
                     repository.ShopItemId = shopItem.Id;
                     return repository;
-                }));
-
+                });
+            model.Reviews.AddRange(modeReviews);
             model.Reviews.Add(new Model.ShopItemReview() { ShopItemId = shopItem.Id, Url = "http://www.lesnumeriques.com" });
 
             this.entityStore.SaveChanges();

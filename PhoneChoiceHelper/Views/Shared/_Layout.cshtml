@@ -1,0 +1,37 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="Phone Choice Helper">
+    <meta name="author" content="Orange SA">
+
+    <link rel="stylesheet" href="~/css/vendor/swiper.min.css" />
+    <link rel="stylesheet" href="~/css/orangeHelvetica.min.css" />
+    <link rel="stylesheet" href="~/css/orangeIcons.min.css" />
+    <link rel="stylesheet" href="~/css/boosted.min.css">
+    <link rel="stylesheet" href="~/css/sample.css">
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+
+    @Html.Partial("~/Views/Shared/_Header.cshtml")
+
+    <main id="content" role="main">
+        <div id="wrap">
+            <div id="main" class="container clear-top">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+
+    @Html.Partial("~/Views/Shared/_Footer.cshtml")
+
+    <script src="~/scripts/vendor/swiper.min.js"></script>
+    <script src="~/scripts/jquery-3.3.1.slim.min.js"></script>
+    <script src="~/scripts/boosted.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
