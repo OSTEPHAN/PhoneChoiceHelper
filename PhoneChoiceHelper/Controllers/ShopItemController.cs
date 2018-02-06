@@ -3,12 +3,14 @@ namespace PhoneChoiceHelper.Controllers
 {
     using Dne.Core.Logging;
     using Dne.Core.Storage;
-    using Dne.Web.Http;
     using Swashbuckle.Swagger.Annotations;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     [DisplayName("ShopItem matching")]
@@ -33,12 +35,34 @@ namespace PhoneChoiceHelper.Controllers
             return this.entityStore.Query<Model.ShopItem>();
         }
 
+        const string subscriptionKey = "601fa9cf0e3f41c18ed94dfe70909a38";
+        const string uriBase = "https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze";
+
         [HttpPost]
         [Route]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
-        public IHttpActionResult Post(Model.ShopItem shopItem)
+        public async Task<IHttpActionResult> Post(Model.ShopItem shopItem)
         {
+            var regex = System.Text.RegularExpressions.Regex.Match(
+                shopItem.SerializedImage,
+                @"data:(?<type>.+?);base64,(?<data>.+)");
+            var base64Data =  regex.Groups["data"].Value;
+            var byteData = System.Convert.FromBase64String(base64Data);
+
+            var request = new HttpClient();
+            request.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+            string requestParameters = "visualFeatures=Categories,Tags,Description";
+            string uri = uriBase + "?" + requestParameters;
+
+            using (ByteArrayContent content = new ByteArrayContent(byteData))
+            {
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                var response = await request.PostAsync(uri, content);
+                string contentString = await response.Content.ReadAsStringAsync();
+            }
+
             var model = this.entityStore.Create<Model.ShopItem>();
             model.Brand = shopItem.Brand;
             model.Name = shopItem.Name;

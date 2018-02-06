@@ -6,8 +6,9 @@
     <h1 class="display-4">Phone choice helper</h1>
     <p class="lead">Quickly data analysis to learn about a device on wich you want more information. Pick from above options a way to retrieve content.</p>
 </div>
+
 <div class="container">
-    <div class="card-deck mb-3 text-center">
+    <div class="card-deck text-center">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">NFC</h4>
@@ -82,6 +83,28 @@
         $(document).ready(function () {
             $('#file-select-button').click(function () {
                 $('.upload input').click();
+            });
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                text = reader.result;
+                $.post("/api/shopitem", {
+                    SerializedImage: text
+                });
+            }
+
+            reader.onerror = function (err) {
+                console.log(err, err.loaded, err.loaded === 0, file);
+            }
+
+            reader.onprogress = function (e) {
+                console.log(e, e.lengthComputable, e.loaded, e.total);
+            }
+
+            $('.upload input').on("change", function (e) {
+                e.preventDefault();
+                var file = document.querySelector('.upload input').files[0];
+                reader.readAsDataURL(file);
             });
         });
 </script>
