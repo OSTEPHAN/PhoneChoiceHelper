@@ -223,6 +223,18 @@
     <Content Include="img\NFC_tag.png" />
     <Content Include="img\orange_logo.svg" />
     <Content Include="img\ORANGE_LOGO_rgb.jpg" />
+    <Content Include="lib\net46\NetEngine.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\net46\NetEngine.Storage.EntityFramework.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\net46\NetEngine.Web.Common.Configuration.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\net46\NetEngine.Web.Server.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="css\boosted-grid.css.map" />
     <Content Include="css\boosted-grid.min.css.map" />

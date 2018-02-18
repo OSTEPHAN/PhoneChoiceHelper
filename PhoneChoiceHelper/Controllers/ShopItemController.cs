@@ -44,6 +44,8 @@ namespace PhoneChoiceHelper.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
         public async Task<IHttpActionResult> Post(Model.ShopItem shopItem)
         {
+            var model = this.entityStore.Create<Model.ShopItem>();
+
             var regex = System.Text.RegularExpressions.Regex.Match(
                 shopItem.SerializedImage,
                 @"data:(?<type>.+?);base64,(?<data>.+)");
@@ -61,9 +63,9 @@ namespace PhoneChoiceHelper.Controllers
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 var response = await request.PostAsync(uri, content);
                 string contentString = await response.Content.ReadAsStringAsync();
+                model.CognitiveAnalysis = Model.CognitiveAnalysis.FromJson(contentString);
             }
 
-            var model = this.entityStore.Create<Model.ShopItem>();
             model.Brand = shopItem.Brand;
             model.Name = shopItem.Name;
             model.SerializedImage = shopItem.SerializedImage;
