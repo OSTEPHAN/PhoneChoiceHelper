@@ -88,9 +88,14 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 text = reader.result;
+
                 $.post("/api/shopitem", {
-                    SerializedImage: text
-                });
+                        SerializedImage: text
+                }).done(function (data) {
+                    window.location.href = "/shop/item/" + data.Id;
+                }).fail(function () {
+                    alert("Sorry. Server unavailable. ");
+                }); 
             }
 
             reader.onerror = function (err) {

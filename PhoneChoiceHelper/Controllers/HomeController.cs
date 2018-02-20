@@ -12,7 +12,6 @@ namespace PhoneChoiceHelper.Controllers
             this.logger = logger;
         }
 
-        // GET: Home
         public ActionResult Index()
         {
             return View();

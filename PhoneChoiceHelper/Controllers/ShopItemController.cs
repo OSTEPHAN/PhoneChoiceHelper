@@ -12,14 +12,28 @@ namespace PhoneChoiceHelper.Controllers
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Http;
+    public class ShopController : System.Web.Mvc.Controller
+    {
+        private readonly ILogger logger;
+        public ShopController(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
+        public System.Web.Mvc.ActionResult Item(string id)
+        {
+            var shopItem = new Model.ShopItem() { Id = System.Guid.Parse(id), };
+            return View(shopItem);
+        }
+    }
 
     [DisplayName("ShopItem matching")]
     [RoutePrefix("api/shopitem")]
-    public class ShopItemController : ApiController
+    public class ApiShopItemController : ApiController
     {
         private readonly ILogger logger;
         private readonly IEntityStore entityStore;
-        public ShopItemController(ILogger logger, IEntityStore entityStore)
+        public ApiShopItemController(ILogger logger, IEntityStore entityStore)
         {
             this.logger = logger;
             this.entityStore = entityStore; ;
@@ -45,6 +59,7 @@ namespace PhoneChoiceHelper.Controllers
         public async Task<IHttpActionResult> Post(Model.ShopItem shopItem)
         {
             var model = this.entityStore.Create<Model.ShopItem>();
+            model.Id = System.Guid.NewGuid();
 
             var regex = System.Text.RegularExpressions.Regex.Match(
                 shopItem.SerializedImage,
@@ -61,9 +76,16 @@ namespace PhoneChoiceHelper.Controllers
             using (ByteArrayContent content = new ByteArrayContent(byteData))
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                var response = await request.PostAsync(uri, content);
-                string contentString = await response.Content.ReadAsStringAsync();
-                model.CognitiveAnalysis = Model.CognitiveAnalysis.FromJson(contentString);
+                try
+                {
+                    var response = await request.PostAsync(uri, content);
+                    string contentString = await response.Content.ReadAsStringAsync();
+                    model.CognitiveAnalysis = Model.CognitiveAnalysis.FromJson(contentString);
+                }
+                catch (System.Exception e)
+                {
+                    this.logger.LogException(e);
+                }
             }
 
             model.Brand = shopItem.Brand;
@@ -71,32 +93,21 @@ namespace PhoneChoiceHelper.Controllers
             model.SerializedImage = shopItem.SerializedImage;
             model.Version = shopItem.Version;
 
-            model.Opinions = model.Opinions ?? new List<Model.ShopItemOpinion>();
-            model.Reviews = model.Reviews ?? new List<Model.ShopItemReview>();
-
-            var modelOpinions = shopItem
-                .Opinions
-                .Select(o =>
-                {
-                    var repository = this.entityStore.Create<Model.ShopItemOpinion>();
-                    repository.Comment = o.Comment;
-                    repository.Note = o.Note;
-                    repository.ShopItemId = shopItem.Id;
-                    return repository;
-                });
-            model.Opinions.AddRange(modelOpinions);
-
-            var modeReviews = shopItem
-                .Reviews
-                .Select(r =>
-                {
-                    var repository = this.entityStore.Create<Model.ShopItemReview>();
-                    repository.Url = r.Url;
-                    repository.ShopItemId = shopItem.Id;
-                    return repository;
-                });
-            model.Reviews.AddRange(modeReviews);
-            model.Reviews.Add(new Model.ShopItemReview() { ShopItemId = shopItem.Id, Url = "http://www.lesnumeriques.com" });
+            if (null != shopItem.Opinions && shopItem.Opinions.Any())
+            {
+                var modelOpinions = shopItem
+                    .Opinions
+                    .Select(o =>
+                    {
+                        var repository = this.entityStore.Create<Model.ShopItemOpinion>();
+                        repository.Comment = o.Comment;
+                        repository.Note = o.Note;
+                        repository.ShopItemId = model.Id;
+                        return repository;
+                    });
+                model.Opinions = model.Opinions ?? new List<Model.ShopItemOpinion>();
+                model.Opinions.AddRange(modelOpinions);
+            }
 
             this.entityStore.SaveChanges();
             return Ok(model);
