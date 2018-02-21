@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneChoiceHelper", "PhoneChoiceHelper\PhoneChoiceHelper.csproj", "{DE5B3975-B54A-4EFE-80A9-41EB91E0E8DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.PhoneChoiceHelper", "UnitTest.PhoneChoiceHelper\UnitTest.PhoneChoiceHelper.csproj", "{6A641E1B-CA48-4BB8-A78A-F185544C9CD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DE5B3975-B54A-4EFE-80A9-41EB91E0E8DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5B3975-B54A-4EFE-80A9-41EB91E0E8DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE5B3975-B54A-4EFE-80A9-41EB91E0E8DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A641E1B-CA48-4BB8-A78A-F185544C9CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A641E1B-CA48-4BB8-A78A-F185544C9CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A641E1B-CA48-4BB8-A78A-F185544C9CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A641E1B-CA48-4BB8-A78A-F185544C9CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
