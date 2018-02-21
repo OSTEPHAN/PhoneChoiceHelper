@@ -5,3 +5,32 @@
 
 <h2>ShopItem for @Model.Id</h2>
 
+<div id="app">
+    <h3> {{ description }} </h3>
+    <ol>
+        <tag-item v-for="item in tags" v-bind:tag="item"></tag-item>
+    </ol>
+</div>
+
+@section scripts {
+    <script>
+        Vue.component('tag-item', {
+            props: ['tag'],
+            template: '<li>{{ tag }}</li>'
+        });
+        $(document).ready(function () {
+            $.get(document.location.origin + '/api/shopitem?$filter=Id eq @Model.Id', function (serialized) {
+                var cognitive = serialized[0].CognitiveAnalysis;
+                var description = cognitive.description;
+                var app = new Vue({
+                    el: '#app',
+                    data: {
+                        description: description.captions[0].text,
+                        tags: description.tags
+                    }
+                });
+            });
+        });
+    </script>
+}
+
